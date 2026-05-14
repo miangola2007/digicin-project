@@ -1,0 +1,10 @@
+<h1>Espace Contrôleur - Dossiers en attente</h1>
+<table>
+    {% for cin in dossiers %}
+    <tr>
+        <td>{{ cin.cin_number }}</td>
+        <td>{{ cin.last_name }}</td>
+        <td><a href="{% url 'controller:examine' cin.id %}">Examiner</a></td>
+    </tr>
+    {% endfor %}
+</table>
