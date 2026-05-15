@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Examen Dossier - {{ cin.cin_number }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-4">
+        <a href="{% url 'controller:dashboard' %}" class="btn btn-secondary mb-3">← Retour</a>
+        
+        <h2>Examen du dossier : {{ cin.cin_number }}</h2>
+        
+        <div class="row mt-4">
+            <!-- Colonne Données Saisies -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-header bg-primary text-white">Données du formulaire</div>
+                    <div class="card-body">
+                        <p><strong>Nom :</strong> {{ cin.last_name }}</p>
+                        <p><strong>Prénom :</strong> {{ cin.first_name }}</p>
+                        <!-- Ajoutez d'autres champs ici -->
+                        <div class="mt-4 p-3 bg-light border rounded text-center">
+                            <p class="text-muted small">Ici s'afficherait la Photo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colonne Scans des documents -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-header bg-info text-white">Scans originaux</div>
+                    <div class="card-body">
+                        <h6>Recto :</h6>
+                        <div class="border mb-2 p-2 text-center bg-white">Recto Scan</div>
+                        <h6>Verso :</h6>
+                        <div class="border p-2 text-center bg-white">Verso Scan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire de décision -->
+        <div class="card mt-4 shadow border-warning">
+            <div class="card-body">
+                <h4>Décision du Contrôleur</h4>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label>Note de révision (si rejeté)</label>
+                        <textarea name="note" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" name="action" value="validate" class="btn btn-success flex-fill">VALIDER LE DOSSIER</button>
+                        <button type="submit" name="action" value="revision" class="btn btn-warning flex-fill text-white">DEMANDER MODIFICATION</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

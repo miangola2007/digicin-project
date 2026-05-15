@@ -1,3 +1,4 @@
+# core/models.py
 from django.db import models
 import uuid
 
@@ -12,16 +13,18 @@ class CIN(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     
-    # Données et Scans
-    recto_scan = models.TextField() # Stockage Base64
+    # Stockage des scans (Base64 pour le test ou ImageField en prod)
+    photo = models.TextField()
+    recto_scan = models.TextField()
     verso_scan = models.TextField()
-    
-    # État du dossier
-    status = models.CharField(max_length=20, choices=CINStatus.choices, default=CINStatus.PENDING)
-    revision_notes = models.TextField(blank=True, null=True)
-    
+
+    status = models.CharField(
+        max_length=20, 
+        choices=CINStatus.choices, 
+        default=CINStatus.PENDING
+    )
+    revision_note = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    validated_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.cin_number} - {self.last_name}"

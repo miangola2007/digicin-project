@@ -1,10 +1,81 @@
-<h1>Espace Contrôleur - Dossiers en attente</h1>
-<table>
-    {% for cin in dossiers %}
-    <tr>
-        <td>{{ cin.cin_number }}</td>
-        <td>{{ cin.last_name }}</td>
-        <td><a href="{% url 'controller:examine' cin.id %}">Examiner</a></td>
-    </tr>
-    {% endfor %}
-</table>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGICIN - Validation des CIN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <!-- Header identique à votre design -->
+    <header class="bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 leading-none uppercase">DIGICIN</h1>
+                    <p class="text-[10px] text-slate-500 font-medium tracking-wider uppercase mt-1">Système d'Identité Numérique</p>
+                </div>
+            </div>
+            <nav class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
+                <a href="#" class="px-4 py-2 text-sm font-medium text-slate-600 rounded-lg transition-all hover:bg-white">Opérateur</a>
+                <a href="#" class="px-4 py-2 text-sm font-medium text-blue-600 bg-white shadow-sm rounded-lg border border-blue-100">Contrôle</a>
+            </nav>
+            <button class="text-slate-400 hover:text-slate-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex justify-between items-end mb-8">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900">Validation des CIN</h2>
+                <p class="text-slate-500">Tableau de bord de révision du Centre de Contrôle.</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm text-center min-w-[150px]">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total en attente</p>
+                <p class="text-3xl font-bold text-blue-600">{{ pending_count }}</p>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden min-h-[300px]">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 border-b border-slate-100">
+                    <tr>
+                        <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase">Numéro CIN</th>
+                        <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase">Nom Complet</th>
+                        <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase">Date Soumission</th>
+                        <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase">Statut</th>
+                        <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    {% for cin in cins %}
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="px-6 py-4 text-sm font-medium text-slate-900">{{ cin.cin_number }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-600">{{ cin.first_name }} {{ cin.last_name }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-500">{{ cin.created_at|date:"d/m/Y" }}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700">En attente</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <a href="{% url 'controller:examine' cin.id %}" class="px-4 py-2 border border-blue-200 text-blue-600 rounded-lg text-xs font-bold hover:bg-blue-50">Examiner</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="py-20 text-center text-slate-400 font-medium">Aucun dossier trouvé dans le système.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
